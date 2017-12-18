@@ -786,13 +786,18 @@ def get_osm_background(config, padding):
 
 def process_shapes(config, hook=None):
     matrix = Matrix.matrix_factory(config.decay)
-    logging.info('processing data')
+    logging.info('processing data from %s shapes' % len(config.shapes))
+    count = 0
+    logstep = int(len(config.shapes)/100)
     for shape in config.shapes:
+        if count % logstep == 0:
+            logging.info('processing shape %s/%s: %s' % (count, len(config.shapes), shape))
         shape = shape.map(config.projection.project)
         # TODO: skip shapes outside map extent
         shape.add_heat_to_matrix(matrix, config.kernel)
         if hook:
             hook(matrix)
+        count=count+1
     return matrix
 
 
