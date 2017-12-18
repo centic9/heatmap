@@ -800,13 +800,19 @@ def value_invert_image(im):
 
 def process_shapes(config, hook=None):
     matrix = Matrix.matrix_factory(config.decay)
-    logging.info('processing data')
+    # previously config.shapes was a list/array, now it is a FileReader which can be iterated
+    # logging.info('processing data from %s shapes' % len(config.shapes))
+    #count = 0
+    # logstep = int(len(config.shapes)/100)
     for shape in config.shapes:
+        # if count % logstep == 0:
+        #    logging.info('processing shape %s/%s: %s' % (count, len(config.shapes), shape))
         shape = shape.map(config.projection.project)
         # TODO: skip shapes outside map extent
         shape.add_heat_to_matrix(matrix, config.kernel)
         if hook:
             hook(matrix)
+        #count=count+1
     return matrix
 
 
@@ -1034,7 +1040,7 @@ class Configuration(object):
         self.set_from_options(args)
 
     def _make_argparser(self):
-        '''Return a an ArgumentParser set up for our command line options.'''
+        '''Return an ArgumentParser set up for our command line options.'''
         from argparse import (ArgumentParser, ArgumentDefaultsHelpFormatter,
                               SUPPRESS)
         description = 'plot a heatmap from coordinate data'
@@ -1216,6 +1222,7 @@ class Configuration(object):
                     self.files, options.__dict__)
 
         if options.extent:
+            logging.debug('Setting extent')
             (lat1, lon1, lat2, lon2) = \
                 [float(f) for f in options.extent.split(',')]
             self.extent_in = Extent(coords=(LatLon(lat1, lon1),
@@ -1280,6 +1287,7 @@ def main():
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
 
+    logging.debug('Arguments: %s' % args)
     if args.load:
         logging.info('loading data')
         matrix = pickle.load(open(args.load, 'rb'))
