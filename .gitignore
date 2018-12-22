@@ -52,6 +52,10 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# IntelliJ
+.idea/
+*.iml
+
 # uv lock file
 uv.lock
 
