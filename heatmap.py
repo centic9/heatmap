@@ -1023,7 +1023,7 @@ class Configuration(object):
         self.set_from_options(args)
 
     def _make_argparser(self):
-        '''Return a an ArgumentParser set up for our command line options.'''
+        '''Return an ArgumentParser set up for our command line options.'''
         from argparse import (ArgumentParser, ArgumentDefaultsHelpFormatter,
                               SUPPRESS)
         description = 'plot a heatmap from coordinate data'
@@ -1202,6 +1202,7 @@ class Configuration(object):
                     self.files, options.__dict__)
 
         if options.extent:
+            logging.debug('Setting extent')
             (lat1, lon1, lat2, lon2) = \
                 [float(f) for f in options.extent.split(',')]
             self.extent_in = Extent(coords=(LatLon(lat1, lon1),
@@ -1259,6 +1260,7 @@ def main():
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
 
+    logging.debug('Arguments: %s' % args)
     if args.load:
         logging.info('loading data')
         matrix = pickle.load(open(args.load, 'rb'))
