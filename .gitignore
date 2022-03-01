@@ -55,3 +55,6 @@ docs/_build/
 # IntelliJ
 .idea/
 *.iml
+
+# Tile Cache
+/tmp

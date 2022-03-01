@@ -702,6 +702,7 @@ def _get_osm_image(bbox, zoom, osm_base, osm_path_template):
             logging.warning(f'OSM URL path template {osm_path_template} '
                             'probably needs a / at the beginning.')
         osm = OSMManager(
+            cache="./tmp",
             image_manager=PILImageManager('RGB'),
             server=osm_base,
             url=osm_base + osm_path_template)
