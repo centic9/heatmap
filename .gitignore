@@ -56,6 +56,9 @@ docs/_build/
 .idea/
 *.iml
 
+# Tile Cache
+/tmp
+
 # uv lock file
 uv.lock
 
